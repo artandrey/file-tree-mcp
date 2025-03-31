@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "file-tree": {
+      "command": "node",
+      "args": [
+        "./dist/index.js",
+        "--directory-rules",
+        "\"Use absolute Windows paths starting with drive letter. No relative paths.\"",
+        "--style",
+        "ClassicDashes",
+        "--recursion",
+        "--gitignore",
+        "--exclude",
+        ".git"
+      ]
+    }
+  }
+}

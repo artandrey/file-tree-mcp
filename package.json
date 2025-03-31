@@ -1,10 +1,10 @@
 {
-  "name": "",
+  "name": "file-tree-mcp",
   "version": "0.0.0",
-  "description": "Starter for building npm package",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "description": "MCP utility to allow model to visualize file tree",
+  "bin": {
+    "generate-file-tree": "./dist/index.js"
+  },
   "scripts": {
     "start:dev": "tsc --watch",
     "test:dev": "vitest",
@@ -24,31 +24,44 @@
     ],
     "**/*.{ts,tsx}": "tsc-files --noEmit"
   },
-  "keywords": [],
+  "keywords": [
+    "mcp",
+    "file",
+    "tree",
+    "developer",
+    "tool"
+  ],
   "author": "Andrii Artemenko",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/.../.git"
+    "url": "git+https://github.com/artandrey/file-tree-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/.../issues"
+    "url": "https://github.com/artandrey/file-tree-mcp/issues"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "@eslint/js": "^9.21.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^22.13.8",
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.2",
-    "@types/node": "^22.13.8",
-    "@changesets/cli": "^2.28.1",
-    "unplugin-swc": "^1.5.1",
     "tsc-files": "^1.1.4",
+    "tsup": "^8.4.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.25.0",
-    "vitest": "^3.0.7",
-    "tsup": "^8.4.0"
+    "unplugin-swc": "^1.5.1",
+    "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "@types/meow": "^6.0.0",
+    "fast-glob": "^3.3.3",
+    "ignore": "^7.0.3",
+    "zod": "^3.24.2"
   }
 }
