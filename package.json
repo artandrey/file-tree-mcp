@@ -1,6 +1,6 @@
 {
   "name": "file-tree-mcp",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "MCP utility to allow model to visualize file tree",
   "bin": {
     "generate-file-tree": "./dist/index.js"
