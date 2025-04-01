@@ -1,32 +1,10 @@
-import { createReadStream, statSync } from 'fs';
+import { statSync } from 'fs';
 import { basename, resolve, sep } from 'path';
 
+import { readFirstLine } from '../util/file-utils';
 import { findFiles } from './find-files';
 import { getPrefix } from './get-prefix';
 import { Style } from './style';
-
-async function readFirstLine(filePath: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const stream = createReadStream(filePath, { encoding: 'utf8', highWaterMark: 1024 });
-    let acc = '';
-    stream.on('data', (chunk: string | Buffer<ArrayBufferLike>) => {
-      acc += chunk;
-      const newlineIndex = acc.indexOf('\n');
-      if (newlineIndex !== -1) {
-        stream.destroy();
-        let line = acc.slice(0, newlineIndex);
-        // Remove BOM if present
-        line = line.replace(/^\uFEFF/, '');
-        resolve(line);
-      }
-    });
-    stream.on('error', (err: Error) => reject(err));
-    stream.on('end', () => {
-      const line = acc.replace(/^\uFEFF/, '');
-      resolve(line);
-    });
-  });
-}
 
 export async function generateStructure(
   folderPath: string,

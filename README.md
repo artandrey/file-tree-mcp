@@ -40,7 +40,10 @@ Example `.cursor/mcp.json` configuration:
         "--recursion",
         "--gitignore",
         "--exclude",
-        ".git"
+        ".git",
+        "--enable-description-by-default",
+        "--description-prefix",
+        "##"
       ]
     }
   }
@@ -51,13 +54,15 @@ Example `.cursor/mcp.json` configuration:
 
 The file tree generator accepts the following command-line options:
 
-| Flag | Long Option         | Description                                        | Example                                  |
-| ---- | ------------------- | -------------------------------------------------- | ---------------------------------------- |
-| `-s` | `--style`           | Output style: `ClassicDashes` or `SlashSeparators` | `--style ClassicDashes`                  |
-| `-r` | `--recursion`       | Enable recursive directory traversal               | `--recursion`                            |
-| `-g` | `--gitignore`       | Respect .gitignore files                           | `--gitignore`                            |
-| `-e` | `--exclude`         | Patterns to exclude from the tree                  | `--exclude node_modules`                 |
-| `-d` | `--directory-rules` | Rules for directory path formatting                | `--directory-rules "Use absolute paths"` |
+| Flag | Long Option                       | Description                                        | Example                                  |
+| ---- | --------------------------------- | -------------------------------------------------- | ---------------------------------------- |
+| `-s` | `--style`                         | Output style: `ClassicDashes` or `SlashSeparators` | `--style ClassicDashes`                  |
+| `-r` | `--recursion`                     | Enable recursive directory traversal               | `--recursion`                            |
+| `-g` | `--gitignore`                     | Respect .gitignore files                           | `--gitignore`                            |
+| `-e` | `--exclude`                       | Patterns to exclude from the tree                  | `--exclude node_modules`                 |
+| `-d` | `--directory-rules`               | Rules for directory path formatting                | `--directory-rules "Use absolute paths"` |
+|      | `--enable-description-by-default` | Default enable reading file descriptions           | `--enable-description-by-default`        |
+|      | `--description-prefix`            | Prefix for file descriptions                       | `--description-prefix "##"`              |
 
 ### Directory Rules
 
@@ -109,13 +114,15 @@ When used in a tool like Cursor or other code editors, these rules help ensure t
 
 When using the MCP server, the following parameters are available:
 
-| Option      | Type     | Description                                        | Default         |
-| ----------- | -------- | -------------------------------------------------- | --------------- |
-| `directory` | string   | The directory path to generate the tree from       | Required        |
-| `exclude`   | string[] | Patterns to exclude from the tree                  | `['.git']`      |
-| `style`     | enum     | Output style: `ClassicDashes` or `SlashSeparators` | `ClassicDashes` |
-| `recursion` | boolean  | Whether to include subdirectories recursively      | `true`          |
-| `gitignore` | boolean  | Whether to respect .gitignore files                | `true`          |
+| Option              | Type     | Description                                        | Default         |
+| ------------------- | -------- | -------------------------------------------------- | --------------- |
+| `directory`         | string   | The directory path to generate the tree from       | Required        |
+| `exclude`           | string[] | Patterns to exclude from the tree                  | `['.git']`      |
+| `style`             | enum     | Output style: `ClassicDashes` or `SlashSeparators` | `ClassicDashes` |
+| `recursion`         | boolean  | Whether to include subdirectories recursively      | `true`          |
+| `gitignore`         | boolean  | Whether to respect .gitignore files                | `true`          |
+| `enableDescription` | boolean  | Whether to read and display file descriptions      | `false`         |
+| `descriptionPrefix` | string   | Prefix used to identify description lines          | `""`            |
 
 ### Output Styles
 
@@ -160,6 +167,37 @@ Here's an example of the file tree output using SlashSeparators style:
 / README.md
 / tsconfig.json
 ```
+
+## File Descriptions
+
+This tool can now read and display descriptions from the first line of files. When `enableDescription` is set to `true`, the tool will check if the first line of each file starts with the specified `descriptionPrefix`. If it does, the rest of that line will be used as the file's description in the generated tree.
+
+### Examples
+
+1. **With `--enable-description-by-default` and `--description-prefix "##"`:**
+
+If a file contains:
+
+```
+##This is a file that handles user authentication
+import { ... }
+```
+
+The tree will display:
+
+```
+└── auth.js: This is a file that handles user authentication
+```
+
+2. **For files without a description:**
+
+Files that don't have a description line starting with the specified prefix will show `<no-description>`:
+
+```
+└── index.js: <no-description>
+```
+
+> **Note:** For performance reasons, this feature should be used on small modules of your application rather than the entire project source.
 
 ## License
 

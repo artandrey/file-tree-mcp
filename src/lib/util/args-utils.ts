@@ -1,4 +1,4 @@
-import { Style } from './tree-mapper/style';
+import { Style } from '../tree-mapper/style';
 
 // Define the type for the command line arguments
 export interface Args {
@@ -7,6 +7,8 @@ export interface Args {
   gitignore: boolean;
   exclude: string[];
   directoryRules: string;
+  enableDescription: boolean;
+  descriptionPrefix: string | null;
 }
 
 /**
@@ -15,12 +17,14 @@ export interface Args {
  */
 export function parseArgs(): Args {
   const argv = process.argv.slice(2);
-  const result = {
+  const result: Args = {
     style: Style.ClassicDashes,
     recursion: false,
     gitignore: false,
     exclude: [] as string[],
     directoryRules: '',
+    enableDescription: false,
+    descriptionPrefix: null,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -83,6 +87,15 @@ export function parseArgs(): Args {
             }
           }
           result.directoryRules = value;
+        }
+        break;
+      case '--enable-description-by-default':
+        result.enableDescription = true;
+        break;
+      case '--description-prefix':
+        if (i + 1 < argv.length) {
+          result.descriptionPrefix = argv[i + 1];
+          i++;
         }
         break;
       default:
